@@ -1,0 +1,41 @@
+# JavaScript Syntax Check
+name: JS lint
+
+# triggered main pushed/pulled
+on: 
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  ESLint-tool:
+    runs-on: ubuntu-latest
+        # Workflow steps
+    steps:
+      # Checks out the repo code 
+      - uses: actions/checkout@v3
+      
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+          
+      # Installs dependencies
+      - name: Install Dependencies
+        run: |
+            cd source
+            npm install
+      # Runs the ESLint tool on all JS files in root directory
+      - name: Run ESLint tool
+        run: |
+            cd source
+            npm run eslint
+
+      # Documentaion
+      # - name: Generate documentation
+        # run: npm run docs
+      
+      # Execute unit tests
+      # - name: Unit Test
+        # run: npm test ./__tests__/sum.test.js
+        # run: npm test ./__tests__/*

@@ -1,0 +1,48 @@
+# docs
+name: JS Doc
+
+# triggered main pushed/pulled
+on: 
+  push:
+    branches: [main]
+
+jobs:
+  documentation:
+    runs-on: ubuntu-latest
+        # Workflow steps
+    steps:
+      # Checks out the repo code 
+      - uses: actions/checkout@v3
+      
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+          
+      # Installs dependencies
+      - name: Install Dependencies
+        run: |
+            cd source
+            npm install
+            
+      # Runs the ESLint tool on all JS files in root directory
+      - name: Generate documentation
+        run: |
+            cd source
+            npm run doc
+      - name: Configure Git
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email 'github-actions[bot]@users.noreply.github.com'
+      - name: Commit and Push changes
+        run: |
+          git add source/doc
+          git commit -m "auto generated docs"
+          git push origin
+      # Documentaion
+      # - name: Generate documentation
+        # run: npm run docs
+      
+      # Execute unit tests
+      # - name: Unit Test
+        # run: npm test ./__tests__/sum.test.js
+        # run: npm test ./__tests__/*
